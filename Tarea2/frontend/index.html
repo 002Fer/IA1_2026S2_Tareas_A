@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Inventario RPG</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+</head>
+
+<body>
+
+    <main class="contenedor">
+
+        <h1>Inventario RPG</h1>
+
+        <p class="descripcion">
+            Consulta los objetos disponibles en el inventario del aventurero.
+        </p>
+
+
+        <!-- Formulario para buscar un objeto -->
+        <form id="formularioBusqueda">
+
+            <label for="item">
+                Item a buscar
+            </label>
+
+            <div class="grupo-busqueda">
+
+                <input
+                    type="text"
+                    id="item"
+                    placeholder="Ejemplo: espada"
+                    autocomplete="off"
+                    required
+                >
+
+                <button type="submit">
+                    Buscar
+                </button>
+
+            </div>
+
+        </form>
+
+
+        <!-- Aquí se mostrarán mensajes de error -->
+        <p
+            id="mensaje"
+            class="mensaje"
+        ></p>
+
+
+        <!-- Resultados recibidos desde el backend -->
+        <section
+            id="resultados"
+            class="resultados oculto"
+        >
+
+            <h2>Resultado de la consulta</h2>
+
+
+            <div class="resultado">
+
+                <h3>Item buscado</h3>
+
+                <p id="itemBuscado"></p>
+
+            </div>
+
+
+            <div class="resultado">
+
+                <h3>Total de items</h3>
+
+                <p id="totalItems"></p>
+
+            </div>
+
+
+            <div class="resultado">
+
+                <h3>Inventario invertido</h3>
+
+                <p id="inventarioInvertido"></p>
+
+            </div>
+
+
+            <div class="resultado">
+
+                <h3>Inventario sin duplicados</h3>
+
+                <p id="inventarioUnico"></p>
+
+            </div>
+
+
+            <div class="resultado">
+
+                <h3>Inventario ordenado con duplicados</h3>
+
+                <p id="inventarioOrdenado"></p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
