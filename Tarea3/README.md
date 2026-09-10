@@ -170,9 +170,9 @@ Los siguientes comandos forman parte de los requisitos de la tarea como funciona
 | Comando        | Descripción                                              | Estado       |
 | -------------- | -------------------------------------------------------- | ------------ |
 | `/hola`        | Saluda al usuario utilizando su nombre de Telegram       | Implementado |
-| `/hora`        | Muestra la fecha y hora actual                           | Pendiente    |
-| `/contacto`    | Muestra la información de contacto del grupo             | Pendiente    |
-| `/integrantes` | Muestra los nombres y carnets de los integrantes         | Pendiente    |
+| `/hora`        | Muestra la fecha y hora actual                           | Implementado |
+| `/contacto`    | Muestra la información de contacto del grupo             | Implementado |
+| `/integrantes` | Muestra los nombres y carnets de los integrantes         | Implementado |
 | `/ayuda`       | Muestra los comandos disponibles y su descripción        | Pendiente    |
 | `/menu`        | Muestra un menú interactivo mediante botones de Telegram | Pendiente    |
 | `/calcular`    | Realiza operaciones matemáticas básicas                  | Pendiente    |

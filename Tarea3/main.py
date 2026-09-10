@@ -2,6 +2,7 @@ import os
 import json
 import urllib.request
 import urllib.parse
+from datetime import datetime, timezone, timedelta
 from dotenv import load_dotenv
 
 # Cargar variables del archivo .env
@@ -39,17 +40,18 @@ def llamar_api(metodo, parametros=None):
         return json.loads(contenido)
 
 
-def enviar_mensaje(chat_id, texto):
+def enviar_mensaje(chat_id, texto, parse_mode="Markdown"):
     """
     Envía un mensaje al usuario.
     """
-    return llamar_api(
-        "sendMessage",
-        {
-            "chat_id": chat_id,
-            "text": texto
-        }
-    )
+    parametros = {
+        "chat_id": chat_id,
+        "text": texto
+    }
+    if parse_mode:
+        parametros["parse_mode"] = parse_mode
+
+    return llamar_api("sendMessage", parametros)
 
 
 def obtener_actualizaciones(offset=None):
@@ -65,49 +67,124 @@ def obtener_actualizaciones(offset=None):
     return llamar_api("getUpdates", parametros)
 
 
-def procesar_mensaje(mensaje):
-    """
-    Procesa un mensaje recibido.
-    """
-    if "message" not in mensaje:
-        return
-
-    chat_id = mensaje["message"]["chat"]["id"]
-    texto = mensaje["message"].get("text", "")
-
-    if texto.startswith("/hola"):
-        comando_hola(chat_id, mensaje)
-
+# ==============================================================================
+# COMANDOS INTEGRANTE 1
+# ==============================================================================
 
 def comando_hola(chat_id, mensaje):
     """
-    Comando /hola.
+    Comando /hola: Saluda al usuario utilizando su nombre de Telegram.
     """
     usuario = mensaje["message"].get("from", {})
     nombre = usuario.get("first_name", "usuario")
     enviar_mensaje(
         chat_id,
-        f"¡Hola, {nombre}! \n"
-        "Bienvenido a el bot de Grupo #9."
+        f"¡Hola, *{nombre}*! 👋\n"
+        "Bienvenido al bot del *Grupo #9*."
     )
+
+
+# ==============================================================================
+# COMANDOS INTEGRANTE 2
+# ==============================================================================
+
+def comando_hora(chat_id):
+    """
+    Comando /hora: Muestra la fecha y hora actual obtenida dinámicamente (UTC-6).
+    """
+    tz_guatemala = timezone(timedelta(hours=-6))
+    ahora = datetime.now(tz_guatemala)
+    fecha_str = ahora.strftime("%d/%m/%Y")
+    hora_str = ahora.strftime("%H:%M:%S")
+
+    mensaje = (
+        " *Fecha y Hora Actual*\n\n"
+        f" *Fecha:* `{fecha_str}`\n"
+        f" *Hora:* `{hora_str}` (UTC-6)"
+    )
+    enviar_mensaje(chat_id, mensaje)
+
+
+def comando_contacto(chat_id):
+    """
+    Comando /contacto: Muestra información de contacto definida por el grupo.
+    """
+    mensaje = (
+        " *Información de Contacto - Grupo #9*\n\n"
+        " *Curso:* Inteligencia Artificial 1\n"
+        "*Universidad:* USAC - Facultad de Ingeniería\n"
+        " *Correo de Contacto:* `grupo9.ia1.usac@gmail.com`\n"
+        " *Bot de Telegram:* @G9_tarea3_bot"
+    )
+    enviar_mensaje(chat_id, mensaje)
+
+
+def comando_integrantes(chat_id):
+    """
+    Comando /integrantes: Muestra los nombres y carnets del Grupo #9.
+    """
+    mensaje = (
+        "👥 *Integrantes del Grupo #9*\n\n"
+        "1. Fernando Misael Morales Ortiz - `202001950`\n"
+        "2. Cristofher Antonio Saquilmer Rodas - `201700686`\n"
+        "3. Daniel Estuardo Salvatierra Macajola - `202202768`\n"
+        "4. Marco Fernando Cruz Mendoza - `202001076`\n"
+        "5. Erick Noe Gómez López - `201700866`"
+    )
+    enviar_mensaje(chat_id, mensaje)
+
+
+# ==============================================================================
+# PROCESAMIENTO PRINCIPAL DE MENSAJES
+# ==============================================================================
+
+def procesar_mensaje(mensaje):
+    """
+    Procesa un mensaje recibido y lo direcciona al comando correspondiente.
+    """
+    if "message" not in mensaje:
+        return
+
+    chat_id = mensaje["message"]["chat"]["id"]
+    texto = mensaje["message"].get("text", "").strip()
+
+    if not texto:
+        return
+
+    # Extraer comando base ignorando mayúsculas/minúsculas y menciones (@bot)
+    partes = texto.split()
+    cmd = partes[0].lower().split("@")[0]
+
+    if cmd == "/hola":
+        comando_hola(chat_id, mensaje)
+    elif cmd == "/hora":
+        comando_hora(chat_id)
+    elif cmd == "/contacto":
+        comando_contacto(chat_id)
+    elif cmd == "/integrantes":
+        comando_integrantes(chat_id)
 
 
 def iniciar_bot():
     """
-    Bucle principal del bot.
+    Bucle principal del bot (Long Polling).
     """
     print("Bot iniciado correctamente.")
 
     offset = None
     while True:
-        respuesta = obtener_actualizaciones(offset)
-        if not respuesta.get("ok"):
-            print("Error al obtener actualizaciones.")
-            continue
-        actualizaciones = respuesta.get("result", [])
-        for actualizacion in actualizaciones:
-            offset = actualizacion["update_id"] + 1
-            procesar_mensaje(actualizacion)
+        try:
+            respuesta = obtener_actualizaciones(offset)
+            if not respuesta.get("ok"):
+                print("Error al obtener actualizaciones.")
+                continue
+            actualizaciones = respuesta.get("result", [])
+            for actualizacion in actualizaciones:
+                offset = actualizacion["update_id"] + 1
+                procesar_mensaje(actualizacion)
+        except Exception as e:
+            print(f"Error en el bucle principal: {e}")
+
 
 if __name__ == "__main__":
     iniciar_bot()
