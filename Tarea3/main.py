@@ -133,6 +133,47 @@ def comando_integrantes(chat_id):
     )
     enviar_mensaje(chat_id, mensaje)
 
+# Comandos de integrante 3
+def comando_ayuda(chat_id):
+    # muestra todos los comandos disponibles y una descripcion de ellos
+    mensaje = (
+        "*Panel de Comandos - Grupo #9*\n"
+        "-------------------------------------\n\n"
+        "*Comandos Generales*\n"
+        "`/hola` — Saluda al usuario de forma personalizada.\n"
+        "`/menu` — Muestra el menú interactivo con botones.\n"
+        "`/ayuda` — Muestra este listado de comandos.\n\n"
+        "*Información del Grupo*\n"
+        "`/hora` — Muestra la fecha y hora actual.\n"
+        "`/contacto` — Muestra la información de contacto del grupo.\n"
+        "`/integrantes` — Muestra los integrantes y carnets.\n\n"
+        "*Herramientas y Cálculos*\n"
+        "`/calcular <n1> <operador> <n2>` — Operaciones aritméticas (+, -, x, /).\n"
+        "`/tabla <numero>` — Genera la tabla de multiplicar de un número.\n"
+        "`/convertir <cantidad> <origen> <destino>` — Convierte longitud (cm, m, km, mi, ft).\n"
+        "`/aleatorio <min> <max>` — Genera un número aleatorio en un rango.\n\n"
+        "-------------------------------------\n"
+    )
+    enviar_mensaje(chat_id, mensaje)
+
+def comando_menu(chat_id):
+    
+    # Muestra un menú interactivo con botones.
+    
+    parametros = {
+        "chat_id": chat_id,
+        "text": "Seleccione una opción del menú:",
+        "reply_markup": json.dumps({
+            "inline_keyboard": [
+                [{"text": "Saludar", "callback_data": "/hola"}],
+                [{"text": "Hora Actual", "callback_data": "/hora"}],
+                [{"text": "Contacto", "callback_data": "/contacto"}],
+                [{"text": "Integrantes", "callback_data": "/integrantes"}],
+                [{"text": "Ayuda", "callback_data": "/ayuda"}]
+            ]
+        })
+    }
+    llamar_api("sendMessage", parametros)
 
 # ==============================================================================
 # PROCESAMIENTO PRINCIPAL DE MENSAJES
@@ -142,6 +183,34 @@ def procesar_mensaje(mensaje):
     """
     Procesa un mensaje recibido y lo direcciona al comando correspondiente.
     """
+
+    # si da clic al boton
+    if "callback_query" in mensaje:
+        cq = mensaje["callback_query"]
+        cq_id = cq["id"]
+        chat_id = cq["message"]["chat"]["id"]
+        cmd = cq.get("data", "").strip().lower().split("@")[0]
+        
+        try:
+            llamar_api("answerCallbackQuery", {"callback_query_id": cq_id})
+        except Exception:
+            pass
+        # Ejecutar el comando del boton
+        if cmd == "/hola":
+            # Le pasa la estructura
+            comando_hola(chat_id, {"message": {"from": cq.get("from", {})}})
+        elif cmd == "/hora":
+            comando_hora(chat_id)
+        elif cmd == "/contacto":
+            comando_contacto(chat_id)
+        elif cmd == "/integrantes":
+            comando_integrantes(chat_id)
+        elif cmd == "/ayuda":
+            comando_ayuda(chat_id)
+        elif cmd == "/menu":
+            comando_menu(chat_id)
+        return
+    
     if "message" not in mensaje:
         return
 
@@ -163,8 +232,10 @@ def procesar_mensaje(mensaje):
         comando_contacto(chat_id)
     elif cmd == "/integrantes":
         comando_integrantes(chat_id)
-
-
+    elif cmd == "/ayuda":
+        comando_ayuda(chat_id)
+    elif cmd == "/menu":
+        comando_menu(chat_id)
 def iniciar_bot():
     """
     Bucle principal del bot (Long Polling).
