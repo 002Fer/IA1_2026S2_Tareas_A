@@ -173,12 +173,24 @@ Los siguientes comandos forman parte de los requisitos de la tarea como funciona
 | `/hora`        | Muestra la fecha y hora actual                           | Implementado |
 | `/contacto`    | Muestra la información de contacto del grupo             | Implementado |
 | `/integrantes` | Muestra los nombres y carnets de los integrantes         | Implementado |
-| `/ayuda`       | Muestra los comandos disponibles y su descripción        | Pendiente    |
-| `/menu`        | Muestra un menú interactivo mediante botones de Telegram | Pendiente    |
-| `/calcular`    | Realiza operaciones matemáticas básicas                  | Pendiente    |
-| `/tabla`       | Muestra la tabla de multiplicar de un número del 1 al 10 | Pendiente    |
+| `/ayuda`       | Muestra los comandos disponibles y su descripción        | Implementado |
+| `/menu`        | Muestra un menú interactivo mediante botones de Telegram | Implementado |
+| `/calcular`    | Realiza operaciones matemáticas básicas                  | Implementado |
+| `/tabla`       | Muestra la tabla de multiplicar de un número del 1 al 10 | Implementado |
 | `/convertir`   | Convierte unidades de longitud                           | Pendiente    |
 | `/aleatorio`   | Genera un número entero aleatorio dentro de un rango     | Pendiente    |
+
+---
+
+## Distribución del trabajo
+
+| Integrante | Responsabilidad |
+| --- | --- |
+| Fernando Misael Morales Ortiz - 202001950 | Configuración general del bot, BotFather, variables de entorno, `.env.example`, `.gitignore`, `requirements.txt`, `main.py`, comando `/hola`, integración final y apoyo en despliegue. |
+| Cristofher Antonio Saquilmer Rodas - 201700686 | Comandos `/hora`, `/contacto` e `/integrantes`, incluyendo validaciones y formato de respuestas. |
+| Daniel Estuardo Salvatierra Macajola - 202202768 | Comandos `/ayuda` y `/menu`, creación de botones interactivos y funcionamiento de las opciones del menú. |
+| Erick Noe Gómez López - 201700866 | Comandos `/calcular` y `/tabla`, operaciones matemáticas, validación de parámetros, operadores incorrectos y división entre cero. |
+| Marco Fernando Cruz Mendoza - 202001076 | Comandos `/convertir` y `/aleatorio`, conversiones de unidades, generación de números aleatorios y manejo general de comandos o parámetros inválidos. |
 
 ---
 
