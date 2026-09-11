@@ -99,9 +99,9 @@ def comando_hora(chat_id):
     hora_str = ahora.strftime("%H:%M:%S")
 
     mensaje = (
-        " *Fecha y Hora Actual*\n\n"
-        f" *Fecha:* `{fecha_str}`\n"
-        f" *Hora:* `{hora_str}` (UTC-6)"
+        "🕒 *Fecha y Hora Actual*\n\n"
+        f"📅 *Fecha:* `{fecha_str}`\n"
+        f"⏰ *Hora:* `{hora_str}` (UTC-6)"
     )
     enviar_mensaje(chat_id, mensaje)
 
@@ -111,11 +111,11 @@ def comando_contacto(chat_id):
     Comando /contacto: Muestra información de contacto definida por el grupo.
     """
     mensaje = (
-        " *Información de Contacto - Grupo #9*\n\n"
-        " *Curso:* Inteligencia Artificial 1\n"
-        "*Universidad:* USAC - Facultad de Ingeniería\n"
-        " *Correo de Contacto:* `grupo9.ia1.usac@gmail.com`\n"
-        " *Bot de Telegram:* @G9_tarea3_bot"
+        "📫 *Información de Contacto - Grupo #9*\n\n"
+        "🎓 *Curso:* Inteligencia Artificial 1\n"
+        "🏛 *Universidad:* USAC - Facultad de Ingeniería\n"
+        "📧 *Correo de Contacto:* `grupo9.ia1.usac@gmail.com`\n"
+        "🤖 *Bot de Telegram:* @G9_tarea3_bot"
     )
     enviar_mensaje(chat_id, mensaje)
 
@@ -134,11 +134,17 @@ def comando_integrantes(chat_id):
     )
     enviar_mensaje(chat_id, mensaje)
 
-# Comandos de integrante 3
+
+# ==============================================================================
+# COMANDOS INTEGRANTE 3
+# ==============================================================================
+
 def comando_ayuda(chat_id):
-    # muestra todos los comandos disponibles y una descripcion de ellos
+    """
+    Muestra todos los comandos disponibles y una descripción de ellos.
+    """
     mensaje = (
-        "*Panel de Comandos - Grupo #9*\n"
+        "📋 *Panel de Comandos - Grupo #9*\n"
         "-------------------------------------\n\n"
         "*Comandos Generales*\n"
         "`/hola` — Saluda al usuario de forma personalizada.\n"
@@ -157,28 +163,159 @@ def comando_ayuda(chat_id):
     )
     enviar_mensaje(chat_id, mensaje)
 
+
 def comando_menu(chat_id):
-    
-    # Muestra un menú interactivo con botones.
-    
+    """
+    Muestra un menú interactivo con botones.
+    """
     parametros = {
         "chat_id": chat_id,
-        "text": "Seleccione una opción del menú:",
+        "text": "📱 *Menú Interactivo de Opciones*\n\nSeleccione una opción:",
+        "parse_mode": "Markdown",
         "reply_markup": json.dumps({
             "inline_keyboard": [
-                [{"text": "Saludar", "callback_data": "/hola"}],
-                [{"text": "Hora Actual", "callback_data": "/hora"}],
-                [{"text": "Contacto", "callback_data": "/contacto"}],
-                [{"text": "Integrantes", "callback_data": "/integrantes"}],
-                [{"text": "Ayuda", "callback_data": "/ayuda"}]
+                [{"text": "👋 Saludar", "callback_data": "/hola"}],
+                [{"text": "🕒 Hora Actual", "callback_data": "/hora"}],
+                [{"text": "📫 Contacto", "callback_data": "/contacto"}],
+                [{"text": "👥 Integrantes", "callback_data": "/integrantes"}],
+                [{"text": "❓ Ayuda", "callback_data": "/ayuda"}]
             ]
         })
     }
     llamar_api("sendMessage", parametros)
 
+
+# ==============================================================================
+# COMANDOS INTEGRANTE 4
+# ==============================================================================
+
+def formatear_numero(numero):
+    """
+    Evita mostrar decimales innecesarios.
+    """
+    return f"{numero:g}"
+
+
+def comando_calcular(chat_id, partes):
+    """
+    Comando /calcular <numero1> <operador> <numero2>.
+    Realiza suma, resta, multiplicación y división.
+    """
+    if len(partes) != 4:
+        mensaje = (
+            "⚠️ *Error: parámetros incorrectos*\n\n"
+            "Forma correcta:\n"
+            "`/calcular <numero1> <operador> <numero2>`\n\n"
+            "Ejemplo:\n"
+            "`/calcular 10 + 5`"
+        )
+        enviar_mensaje(chat_id, mensaje)
+        return
+
+    try:
+        numero1 = float(partes[1])
+        numero2 = float(partes[3])
+    except ValueError:
+        mensaje = (
+            "⚠️ *Error: valores inválidos*\n\n"
+            "Los valores utilizados en la operación deben ser números.\n\n"
+            "Ejemplo:\n"
+            "`/calcular 10 + 5`"
+        )
+        enviar_mensaje(chat_id, mensaje)
+        return
+
+    operador = partes[2].lower()
+
+    if operador == "+":
+        resultado = numero1 + numero2
+    elif operador == "-":
+        resultado = numero1 - numero2
+    elif operador in ("*", "x"):
+        resultado = numero1 * numero2
+    elif operador == "/":
+        if numero2 == 0:
+            mensaje = (
+                "⚠️ *Error matemático*\n\n"
+                "No es posible realizar una división entre cero."
+            )
+            enviar_mensaje(chat_id, mensaje)
+            return
+        resultado = numero1 / numero2
+    else:
+        mensaje = (
+            "⚠️ *Error: operador incorrecto*\n\n"
+            "Los operadores permitidos son:\n"
+            "`+` suma\n"
+            "`-` resta\n"
+            "`*` o `x` multiplicación\n"
+            "`/` división\n\n"
+            "Ejemplo:\n"
+            "`/calcular 10 * 5`"
+        )
+        enviar_mensaje(chat_id, mensaje)
+        return
+
+    mensaje = (
+        "🧮 *Resultado de la operación*\n\n"
+        f"`{formatear_numero(numero1)} "
+        f"{partes[2]} "
+        f"{formatear_numero(numero2)} = "
+        f"{formatear_numero(resultado)}`"
+    )
+
+    enviar_mensaje(chat_id, mensaje)
+
+
+def comando_tabla(chat_id, partes):
+    """
+    Comando /tabla <numero>.
+    Genera la tabla de multiplicar desde 1 hasta 10.
+    """
+    if len(partes) != 2:
+        mensaje = (
+            "⚠️ *Error: parámetros incorrectos*\n\n"
+            "Forma correcta:\n"
+            "`/tabla <numero>`\n\n"
+            "Ejemplo:\n"
+            "`/tabla 5`"
+        )
+        enviar_mensaje(chat_id, mensaje)
+        return
+
+    try:
+        numero = float(partes[1])
+    except ValueError:
+        mensaje = (
+            "⚠️ *Error: valor inválido*\n\n"
+            "El parámetro ingresado debe ser un número.\n\n"
+            "Ejemplo:\n"
+            "`/tabla 5`"
+        )
+        enviar_mensaje(chat_id, mensaje)
+        return
+
+    numero_texto = formatear_numero(numero)
+    lineas = []
+
+    for i in range(1, 11):
+        resultado = numero * i
+        lineas.append(
+            f"{numero_texto} x {i} = {formatear_numero(resultado)}"
+        )
+
+    mensaje = (
+        f"✖️ *Tabla de multiplicar del {numero_texto}*\n\n"
+        + "\n".join(lineas)
+    )
+
+    enviar_mensaje(chat_id, mensaje)
+
+
 # ==============================================================================
 # COMANDOS INTEGRANTE 5
 # ==============================================================================
+
 def comando_convertir(chat_id, texto):
     """
     Comando /convertir <cantidad> <origen> <destino>
@@ -186,7 +323,6 @@ def comando_convertir(chat_id, texto):
     """
     partes = texto.split()
     
-    # Validar número de parámetros
     if len(partes) != 4:
         enviar_mensaje(
             chat_id,
@@ -197,7 +333,6 @@ def comando_convertir(chat_id, texto):
         )
         return
 
-    # Validar que la cantidad sea un número float
     try:
         cantidad = float(partes[1])
     except ValueError:
@@ -211,7 +346,6 @@ def comando_convertir(chat_id, texto):
     origen = partes[2].lower()
     destino = partes[3].lower()
 
-    # Factores de conversión tomando como base el metro (m)
     factores_a_metros = {
         "cm": 0.01,
         "m": 1.0,
@@ -220,7 +354,6 @@ def comando_convertir(chat_id, texto):
         "ft": 0.3048
     }
 
-    # Validar unidades ingresadas
     if origen not in factores_a_metros or destino not in factores_a_metros:
         enviar_mensaje(
             chat_id,
@@ -229,7 +362,6 @@ def comando_convertir(chat_id, texto):
         )
         return
 
-    # Calcular conversión
     metros = cantidad * factores_a_metros[origen]
     resultado = metros / factores_a_metros[destino]
 
@@ -248,7 +380,6 @@ def comando_aleatorio(chat_id, texto):
     """
     partes = texto.split()
 
-    # Validar número de parámetros
     if len(partes) != 3:
         enviar_mensaje(
             chat_id,
@@ -258,7 +389,6 @@ def comando_aleatorio(chat_id, texto):
         )
         return
 
-    # Validar que ambos parámetros sean enteros
     try:
         minimo = int(partes[1])
         maximo = int(partes[2])
@@ -270,7 +400,6 @@ def comando_aleatorio(chat_id, texto):
         )
         return
 
-    # Validar congruencia del rango
     if minimo > maximo:
         enviar_mensaje(
             chat_id,
@@ -287,29 +416,27 @@ def comando_aleatorio(chat_id, texto):
         f"• *Número obtenido:* *{numero}*"
     )
 
+
 # ==============================================================================
-# PROCESAMIENTO PRINCIPAL DE MENSAJES
+# PROCESAMIENTO PRINCIPAL DE MENSAJES Y CALLBACKS
 # ==============================================================================
 
 def procesar_mensaje(mensaje):
     """
-    Procesa un mensaje recibido y lo direcciona al comando correspondiente.
+    Procesa un mensaje recibido (texto o interacción de botón) y lo direcciona.
     """
-
-    # si da clic al boton
     if "callback_query" in mensaje:
         cq = mensaje["callback_query"]
         cq_id = cq["id"]
         chat_id = cq["message"]["chat"]["id"]
         cmd = cq.get("data", "").strip().lower().split("@")[0]
-        
+
         try:
             llamar_api("answerCallbackQuery", {"callback_query_id": cq_id})
         except Exception:
             pass
-        # Ejecutar el comando del boton
+
         if cmd == "/hola":
-            # Le pasa la estructura
             comando_hola(chat_id, {"message": {"from": cq.get("from", {})}})
         elif cmd == "/hora":
             comando_hora(chat_id)
@@ -321,18 +448,14 @@ def procesar_mensaje(mensaje):
             comando_ayuda(chat_id)
         elif cmd == "/menu":
             comando_menu(chat_id)
-        elif cmd == "/convertir":
-            comando_convertir(chat_id, texto)
-        elif cmd == "/aleatorio":
-            comando_aleatorio(chat_id, texto)
         elif cmd.startswith("/"):
-            # Manejo de comandos no reconocidos o inexistentes
             enviar_mensaje(
                 chat_id,
-                "⚠️ *Comando no reconocido o inexistente.*\n\n"
-                "Escribe `/ayuda` para ver la lista de comandos disponibles y su sintaxis correcta."
+                "⚠️ *Opción no reconocida.*\n\n"
+                "Escribe `/ayuda` para ver la lista de comandos disponibles."
             )
-    
+        return
+
     if "message" not in mensaje:
         return
 
@@ -342,11 +465,10 @@ def procesar_mensaje(mensaje):
     if not texto:
         return
 
-    # Extraer comando base ignorando mayúsculas/minúsculas y menciones (@bot)
     partes = texto.split()
     cmd = partes[0].lower().split("@")[0]
 
-    if cmd == "/hola":
+    if cmd in ("/hola", "/start"):
         comando_hola(chat_id, mensaje)
     elif cmd == "/hora":
         comando_hora(chat_id)
@@ -358,17 +480,21 @@ def procesar_mensaje(mensaje):
         comando_ayuda(chat_id)
     elif cmd == "/menu":
         comando_menu(chat_id)
+    elif cmd == "/calcular":
+        comando_calcular(chat_id, partes)
+    elif cmd == "/tabla":
+        comando_tabla(chat_id, partes)
     elif cmd == "/convertir":
         comando_convertir(chat_id, texto)
     elif cmd == "/aleatorio":
         comando_aleatorio(chat_id, texto)
     elif cmd.startswith("/"):
-        # Manejo de comandos no reconocidos o inexistentes
         enviar_mensaje(
             chat_id,
             "⚠️ *Comando no reconocido o inexistente.*\n\n"
             "Escribe `/ayuda` para ver la lista de comandos disponibles y su sintaxis correcta."
         )
+
 
 def iniciar_bot():
     """

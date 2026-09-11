@@ -2,45 +2,43 @@
 
 ## Integrantes
 
-| Integrante   | Carnet |
-| ------------ | ------ | 
-| FERNANDO MISAEL MORALES ORTIZ | 202001950 | 
-| CRISTOFHER ANTONIO SAQUILMER RODAS | 201700686 | 
-| DANIEL ESTUARDO SALVATIERRA MACAJOLA | 202202768 | 
-| MARCO FERNANDO CRUZ MENDOZA | 202001076 | 
-| ERICK NOE GÓMEZ LÓPEZ | 201700866 | 
+| Integrante | Carnet | Rol / Asignación |
+| ------------ | ------ | ---------------- |
+| FERNANDO MISAEL MORALES ORTIZ | 202001950 | Integrante 1: Configuración general, BotFather, .env, main.py, /hola |
+| CRISTOFHER ANTONIO SAQUILMER RODAS | 201700686 | Integrante 2: /hora, /contacto, /integrantes |
+| DANIEL ESTUARDO SALVATIERRA MACAJOLA | 202202768 | Integrante 3: /ayuda, /menu con botones interactivos |
+| MARCO FERNANDO CRUZ MENDOZA | 202001076 | Integrante 4: /calcular, /tabla |
+| ERICK NOE GÓMEZ LÓPEZ | 201700866 | Integrante 5: /convertir, /aleatorio y manejo de errores |
 
 ---
 
 ## Descripción
 
-Esta tarea consiste en el desarrollo de un bot interactivo para Telegram utilizando **Python** y la **Telegram Bot API** usando **BotFather**.
+Esta tarea consiste en el desarrollo de un bot interactivo para Telegram utilizando **Python** y la **Telegram Bot API** configurada a través de **BotFather**.
 
-El bot permite a los usuarios interactuar mediante comandos y posteriormente contará con un menú interactivo mediante botones de Telegram.
+El bot permite a los usuarios interactuar mediante comandos con parámetros y cuenta con un menú interactivo con botones de respuesta rápida de Telegram (*Inline Keyboards*).
 
-La comunicación con Telegram se realiza directamente mediante solicitudes HTTP a la **Telegram Bot API**, sin utilizar bibliotecas externas.
+La comunicación con Telegram se realiza directamente mediante solicitudes HTTP (`urllib`) a la **Telegram Bot API**, sin utilizar bibliotecas externas.
 
-El token de autenticación del bot se maneja mediante una **variable de entorno**, evitando almacenarlo directamente en el código fuente.
+El token de autenticación del bot se maneja mediante una **variable de entorno** (`.env`), evitando almacenarlo directamente en el código fuente.
 
 ---
 
-## Bot de Telegram usando @BotFather
+## Bot de Telegram
 
-**Nombre del bot:** `G9_tarea3_bot`
-
+**Nombre del bot:** `G9_tarea3_bot`  
 **Enlace:** `https://t.me/G9_tarea3_bot`
-
 
 ---
 
 ## Tecnologías utilizadas
 
-* Python
-* Telegram Bot API
-* Variables de entorno
-* `urllib` para realizar solicitudes HTTP
-* `python-dotenv` para cargar variables de entorno desde `.env`
-* Git y GitHub
+* **Python 3**
+* **Telegram Bot API** (sin librerías de terceros)
+* **`urllib`** para realizar solicitudes HTTP (POST/GET)
+* **`python-dotenv`** para cargar variables de entorno desde `.env`
+* **Variables de entorno** para credenciales sensibles
+* **Git y GitHub**
 
 ---
 
@@ -60,7 +58,7 @@ Tarea3/
 
 ## Variables de entorno
 
-El token del bot se almacena mediante una variable de entorno para evitar incluir información sensible directamente en el código.
+El token del bot se almacena mediante una variable de entorno para evitar incluir información sensible en el repositorio.
 
 El archivo `.env.example` contiene la estructura necesaria:
 
@@ -68,7 +66,7 @@ El archivo `.env.example` contiene la estructura necesaria:
 TELEGRAM_BOT_TOKEN=token_bot_father_aqui
 ```
 
-Para ejecutar el proyecto localmente, se debe crear un archivo `.env` a partir de `.env.example` y colocar el token real proporcionado por **BotFather**:
+Para ejecutar el proyecto localmente, se debe crear un archivo `.env` a partir de `.env.example` y colocar el token real de **BotFather**:
 
 ```env
 TELEGRAM_BOT_TOKEN=TOKEN_REAL_DEL_BOT
@@ -76,164 +74,130 @@ TELEGRAM_BOT_TOKEN=TOKEN_REAL_DEL_BOT
 
 ---
 
-## Instalación
+## Instalación y Ejecución
 
-### 1. Clonar el repositorio
-
+### 1. Clonar el repositorio e ingresar a la carpeta
 ```bash
-git clone URL_DEL_REPOSITORIO
+git clone https://github.com/002Fer/IA1_2026S2_Tareas_A.git
+cd IA1_2026S2_Tareas_A/Tarea3
 ```
 
-Ingresar a la carpeta de la tarea:
-
-```bash
-cd Tarea3
-```
-
-### 2. Crear un entorno virtual
-
+### 2. Crear y activar el entorno virtual
 En Windows:
-
 ```bash
 python -m venv .venv
-```
-
-Activar el entorno virtual:
-
-```bash
 .venv\Scripts\activate
 ```
 
 ### 3. Instalar las dependencias
-
 ```bash
 pip install -r requirements.txt
 ```
 
 ### 4. Configurar las variables de entorno
-
-Crear un archivo llamado:
-
-```text
-.env
-```
-
-Agregar:
-
+Crear un archivo `.env` e ingresar la clave del bot:
 ```env
-TELEGRAM_BOT_TOKEN=TOKEN_REAL_DEL_BOT
+TELEGRAM_BOT_TOKEN=TU_TOKEN_DE_BOTFATHER
 ```
 
 ### 5. Ejecutar el bot
-
 ```bash
 python main.py
 ```
 
 Si la configuración es correcta, se mostrará:
-
 ```text
 Bot iniciado correctamente.
 ```
 
-Posteriormente se puede acceder al bot desde el enlace del bot en Telegram proporcionado anteriormente en la seccion `Bot de Telegram usando @BotFather` y presionar **START** para comenzar la interacción.
-
 ---
 
-## Comandos implementados
+## Comandos Implementados
 
 ### `/hola`
-
-Saluda al usuario utilizando el nombre configurado en su cuenta de Telegram.
-
-Ejemplo:
-
+Saluda al usuario utilizando su nombre configurado en Telegram.
 ```text
-/hola
+Sintaxis: /hola
 ```
 
-Respuesta:
-
+### `/hora`
+Muestra la fecha y hora actual generada dinámicamente en formato UTC-6.
 ```text
-¡Hola, Mazariegos! 
-Bienvenido a el bot de Grupo #9.
+Sintaxis: /hora
 ```
 
-El nombre se obtiene dinámicamente de la información proporcionada por Telegram para el usuario que envía el mensaje.
-
-### `/convertir <cantidad> <origen> < destino>`
-
-Realiza conversiones entre las unidades de longitud: cm, m, km, mi, ft.
-
-Ejemplo:
-
+### `/contacto`
+Muestra la información de contacto oficial definida para el Grupo #9.
 ```text
-/convertir 1 km cm
+Sintaxis: /contacto
 ```
 
-Respuesta:
-
+### `/integrantes`
+Muestra el listado de nombres completos y carnets de los 5 integrantes del grupo.
 ```text
-📏 Conversión de Longitud
-
-• Entrada: 1.0 km
-• Resultado: 100000.0000 cm
+Sintaxis: /integrantes
 ```
 
-### `/aleatorio <min> < max>`
-
-Genera un número entero aleatorio dentro del rango [min, max].
-
-Ejemplo:
-
+### `/ayuda`
+Muestra un panel estructurado con todos los comandos disponibles y su descripción.
 ```text
-/aleatorio 1 100
+Sintaxis: /ayuda
 ```
 
-Respuesta:
-
+### `/menu`
+Despliega un menú interactivo con botones de respuesta (*Inline Keyboard*) para acceder rápidamente a los comandos.
 ```text
-🎲 Generador Aleatorio
+Sintaxis: /menu
+```
 
-• Rango: [1, 100]
-• Número obtenido: 12
+### `/calcular <n1> <operador> <n2>`
+Realiza operaciones matemáticas básicas: suma (`+`), resta (`-`), multiplicación (`*` o `x`) y división (`/`).
+```text
+Ejemplo: /calcular 10 / 2
+```
+
+### `/tabla <numero>`
+Genera la tabla de multiplicar del número ingresado del 1 al 10.
+```text
+Ejemplo: /tabla 7
+```
+
+### `/convertir <cantidad> <unidad_origen> <unidad_destino>`
+Realiza la conversión entre unidades de longitud (`cm`, `m`, `km`, `mi`, `ft`).
+```text
+Ejemplo: /convertir 1 km cm
+```
+
+### `/aleatorio <min> <max>`
+Genera un número entero aleatorio dentro del rango de valores indicado `[min, max]`.
+```text
+Ejemplo: /aleatorio 1 100
 ```
 
 ---
 
-## Comandos que puede ejecutar el Bot
+## Estado de Comandos
 
-Los siguientes comandos forman parte de los requisitos de la tarea como funcionalidades del Bot:
+Los 10 comandos solicitados en la especificación están 100% implementados y validados:
 
-| Comando        | Descripción                                              | Estado       |
-| -------------- | -------------------------------------------------------- | ------------ |
-| `/hola`        | Saluda al usuario utilizando su nombre de Telegram       | Implementado |
-| `/hora`        | Muestra la fecha y hora actual                           | Implementado |
-| `/contacto`    | Muestra la información de contacto del grupo             | Implementado |
-| `/integrantes` | Muestra los nombres y carnets de los integrantes         | Implementado |
-| `/ayuda`       | Muestra los comandos disponibles y su descripción        | Pendiente    |
-| `/menu`        | Muestra un menú interactivo mediante botones de Telegram | Pendiente    |
-| `/calcular`    | Realiza operaciones matemáticas básicas                  | Pendiente    |
-| `/tabla`       | Muestra la tabla de multiplicar de un número del 1 al 10 | Pendiente    |
-| `/convertir`   | Convierte unidades de longitud                           | Implementado    |
-| `/aleatorio`   | Genera un número entero aleatorio dentro de un rango     | Implementado    |
-
----
-
-## Comunicación con Telegram
-
-El proyecto realiza la comunicación directamente con la Telegram Bot API mediante solicitudes HTTP.
-
-No se utilizan librerías específicas de Telegram.
-
-La estructura general de comunicación es:
-
-```text
-Usuario --> comando Telegram --> Telegram Bot API --> main.py (Procesamiento) --> Telegram Bot API --> Telegram --> Usuario recibe respuesta
-```
-
-El programa obtiene los mensajes mediante `getUpdates` y envía las respuestas mediante `sendMessage`.
+| Comando | Descripción | Estado |
+| ------- | ----------- | ------ |
+| `/hola` | Saluda al usuario utilizando su nombre de Telegram | Implementado |
+| `/hora` | Muestra la fecha y hora actual dinámicamente | Implementado |
+| `/contacto` | Muestra la información de contacto del grupo | Implementado |
+| `/integrantes` | Muestra los nombres y carnets de los integrantes | Implementado |
+| `/ayuda` | Muestra la lista de comandos disponibles y su descripción | Implementado |
+| `/menu` | Muestra un menú interactivo mediante botones de Telegram | Implementado |
+| `/calcular` | Realiza operaciones matemáticas (+, -, *, /) con validación | Implementado |
+| `/tabla` | Muestra la tabla de multiplicar de un número del 1 al 10 | Implementado |
+| `/convertir` | Convierte unidades de longitud (cm, m, km, mi, ft) | Implementado |
+| `/aleatorio` | Genera un número entero aleatorio dentro de un rango | Implementado |
 
 ---
 
+## Comunicación con Telegram Bot API
 
+El proyecto interactúa directamente con la Telegram Bot API mediante la biblioteca estándar de Python (`urllib`):
+* `getUpdates`: Para recibir nuevos mensajes mediante Long Polling.
+* `sendMessage`: Para enviar mensajes formateados en Markdown y teclados interactivos (`inline_keyboard`).
+* `answerCallbackQuery`: Para responder a los clics de botones del menú.
