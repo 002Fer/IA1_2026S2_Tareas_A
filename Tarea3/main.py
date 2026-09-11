@@ -1,5 +1,6 @@
 import os
 import json
+import random
 import urllib.request
 import urllib.parse
 from datetime import datetime, timezone, timedelta
@@ -176,6 +177,117 @@ def comando_menu(chat_id):
     llamar_api("sendMessage", parametros)
 
 # ==============================================================================
+# COMANDOS INTEGRANTE 5
+# ==============================================================================
+def comando_convertir(chat_id, texto):
+    """
+    Comando /convertir <cantidad> <origen> <destino>
+    Realiza conversiones entre las unidades de longitud: cm, m, km, mi, ft.
+    """
+    partes = texto.split()
+    
+    # Validar número de parámetros
+    if len(partes) != 4:
+        enviar_mensaje(
+            chat_id,
+            "⚠️ *Parámetros incompletos o incorrectos.*\n\n"
+            "📌 *Uso correcto:* `/convertir <cantidad> <origen> <destino>`\n"
+            "💡 *Ejemplo:* `/convertir 10 m cm`\n"
+            "📏 *Unidades válidas:* `cm`, `m`, `km`, `mi`, `ft`"
+        )
+        return
+
+    # Validar que la cantidad sea un número float
+    try:
+        cantidad = float(partes[1])
+    except ValueError:
+        enviar_mensaje(
+            chat_id,
+            "⚠️ *Error:* La cantidad debe ser un valor numérico válido.\n"
+            "📌 *Ejemplo:* `/convertir 15.5 m ft`"
+        )
+        return
+
+    origen = partes[2].lower()
+    destino = partes[3].lower()
+
+    # Factores de conversión tomando como base el metro (m)
+    factores_a_metros = {
+        "cm": 0.01,
+        "m": 1.0,
+        "km": 1000.0,
+        "mi": 1609.344,
+        "ft": 0.3048
+    }
+
+    # Validar unidades ingresadas
+    if origen not in factores_a_metros or destino not in factores_a_metros:
+        enviar_mensaje(
+            chat_id,
+            "⚠️ *Unidades de medida no válidas.*\n\n"
+            "📏 *Las unidades soportadas son:* `cm`, `m`, `km`, `mi`, `ft`"
+        )
+        return
+
+    # Calcular conversión
+    metros = cantidad * factores_a_metros[origen]
+    resultado = metros / factores_a_metros[destino]
+
+    enviar_mensaje(
+        chat_id,
+        f"📏 *Conversión de Longitud*\n\n"
+        f"• *Entrada:* `{cantidad} {origen}`\n"
+        f"• *Resultado:* `{resultado:.4f} {destino}`"
+    )
+
+
+def comando_aleatorio(chat_id, texto):
+    """
+    Comando /aleatorio <min> <max>
+    Genera un número entero aleatorio dentro del rango [min, max].
+    """
+    partes = texto.split()
+
+    # Validar número de parámetros
+    if len(partes) != 3:
+        enviar_mensaje(
+            chat_id,
+            "⚠️ *Parámetros incompletos o incorrectos.*\n\n"
+            "📌 *Uso correcto:* `/aleatorio <min> <max>`\n"
+            "💡 *Ejemplo:* `/aleatorio 1 100`"
+        )
+        return
+
+    # Validar que ambos parámetros sean enteros
+    try:
+        minimo = int(partes[1])
+        maximo = int(partes[2])
+    except ValueError:
+        enviar_mensaje(
+            chat_id,
+            "⚠️ *Error:* Los límites `<min>` y `<max>` deben ser números enteros.\n"
+            "📌 *Ejemplo:* `/aleatorio 10 50`"
+        )
+        return
+
+    # Validar congruencia del rango
+    if minimo > maximo:
+        enviar_mensaje(
+            chat_id,
+            "⚠️ *Error:* El valor mínimo (`min`) no puede ser mayor que el valor máximo (`max`).\n"
+            "📌 *Ejemplo:* `/aleatorio 1 10`"
+        )
+        return
+
+    numero = random.randint(minimo, maximo)
+    enviar_mensaje(
+        chat_id,
+        f"🎲 *Generador Aleatorio*\n\n"
+        f"• *Rango:* `[{minimo}, {maximo}]`\n"
+        f"• *Número obtenido:* *{numero}*"
+    )
+
+# ==============================================================================
 # PROCESAMIENTO PRINCIPAL DE MENSAJES
 # ==============================================================================
 
@@ -209,7 +321,17 @@ def procesar_mensaje(mensaje):
             comando_ayuda(chat_id)
         elif cmd == "/menu":
             comando_menu(chat_id)
-        return
+        elif cmd == "/convertir":
+            comando_convertir(chat_id, texto)
+        elif cmd == "/aleatorio":
+            comando_aleatorio(chat_id, texto)
+        elif cmd.startswith("/"):
+            # Manejo de comandos no reconocidos o inexistentes
+            enviar_mensaje(
+                chat_id,
+                "⚠️ *Comando no reconocido o inexistente.*\n\n"
+                "Escribe `/ayuda` para ver la lista de comandos disponibles y su sintaxis correcta."
+            )
     
     if "message" not in mensaje:
         return
@@ -236,6 +358,18 @@ def procesar_mensaje(mensaje):
         comando_ayuda(chat_id)
     elif cmd == "/menu":
         comando_menu(chat_id)
+    elif cmd == "/convertir":
+        comando_convertir(chat_id, texto)
+    elif cmd == "/aleatorio":
+        comando_aleatorio(chat_id, texto)
+    elif cmd.startswith("/"):
+        # Manejo de comandos no reconocidos o inexistentes
+        enviar_mensaje(
+            chat_id,
+            "⚠️ *Comando no reconocido o inexistente.*\n\n"
+            "Escribe `/ayuda` para ver la lista de comandos disponibles y su sintaxis correcta."
+        )
+
 def iniciar_bot():
     """
     Bucle principal del bot (Long Polling).

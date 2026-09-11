@@ -161,6 +161,44 @@ Bienvenido a el bot de Grupo #9.
 
 El nombre se obtiene dinámicamente de la información proporcionada por Telegram para el usuario que envía el mensaje.
 
+### `/convertir <cantidad> <origen> < destino>`
+
+Realiza conversiones entre las unidades de longitud: cm, m, km, mi, ft.
+
+Ejemplo:
+
+```text
+/convertir 1 km cm
+```
+
+Respuesta:
+
+```text
+📏 Conversión de Longitud
+
+• Entrada: 1.0 km
+• Resultado: 100000.0000 cm
+```
+
+### `/aleatorio <min> < max>`
+
+Genera un número entero aleatorio dentro del rango [min, max].
+
+Ejemplo:
+
+```text
+/aleatorio 1 100
+```
+
+Respuesta:
+
+```text
+🎲 Generador Aleatorio
+
+• Rango: [1, 100]
+• Número obtenido: 12
+```
+
 ---
 
 ## Comandos que puede ejecutar el Bot
@@ -177,8 +215,8 @@ Los siguientes comandos forman parte de los requisitos de la tarea como funciona
 | `/menu`        | Muestra un menú interactivo mediante botones de Telegram | Pendiente    |
 | `/calcular`    | Realiza operaciones matemáticas básicas                  | Pendiente    |
 | `/tabla`       | Muestra la tabla de multiplicar de un número del 1 al 10 | Pendiente    |
-| `/convertir`   | Convierte unidades de longitud                           | Pendiente    |
-| `/aleatorio`   | Genera un número entero aleatorio dentro de un rango     | Pendiente    |
+| `/convertir`   | Convierte unidades de longitud                           | Implementado    |
+| `/aleatorio`   | Genera un número entero aleatorio dentro de un rango     | Implementado    |
 
 ---
 
