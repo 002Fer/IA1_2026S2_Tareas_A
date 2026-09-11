@@ -176,6 +176,140 @@ def comando_menu(chat_id):
     llamar_api("sendMessage", parametros)
 
 # ==============================================================================
+# COMANDOS INTEGRANTE 4
+# ==============================================================================
+
+def formatear_numero(numero):
+    """
+    Evita mostrar decimales innecesarios.
+    """
+    return f"{numero:g}"
+
+
+def comando_calcular(chat_id, partes):
+    """
+    Comando /calcular <numero1> <operador> <numero2>.
+    Realiza suma, resta, multiplicaci\u00f3n y divisi\u00f3n.
+    """
+
+    if len(partes) != 4:
+        mensaje = (
+            "*Error: par\u00e1metros incorrectos*\n\n"
+            "Forma correcta:\n"
+            "`/calcular <numero1> <operador> <numero2>`\n\n"
+            "Ejemplo:\n"
+            "`/calcular 10 + 5`"
+        )
+        enviar_mensaje(chat_id, mensaje)
+        return
+
+    try:
+        numero1 = float(partes[1])
+        numero2 = float(partes[3])
+    except ValueError:
+        mensaje = (
+            "*Error: valores inv\u00e1lidos*\n\n"
+            "Los valores utilizados en la operaci\u00f3n deben ser n\u00fameros.\n\n"
+            "Ejemplo:\n"
+            "`/calcular 10 + 5`"
+        )
+        enviar_mensaje(chat_id, mensaje)
+        return
+
+    operador = partes[2].lower()
+
+    if operador == "+":
+        resultado = numero1 + numero2
+
+    elif operador == "-":
+        resultado = numero1 - numero2
+
+    elif operador in ("*", "x"):
+        resultado = numero1 * numero2
+
+    elif operador == "/":
+        if numero2 == 0:
+            mensaje = (
+                "*Error matem\u00e1tico*\n\n"
+                "No es posible realizar una divisi\u00f3n entre cero."
+            )
+            enviar_mensaje(chat_id, mensaje)
+            return
+
+        resultado = numero1 / numero2
+
+    else:
+        mensaje = (
+            "*Error: operador incorrecto*\n\n"
+            "Los operadores permitidos son:\n"
+            "`+` suma\n"
+            "`-` resta\n"
+            "`*` o `x` multiplicaci\u00f3n\n"
+            "`/` divisi\u00f3n\n\n"
+            "Ejemplo:\n"
+            "`/calcular 10 * 5`"
+        )
+        enviar_mensaje(chat_id, mensaje)
+        return
+
+    mensaje = (
+        "*Resultado de la operaci\u00f3n*\n\n"
+        f"`{formatear_numero(numero1)} "
+        f"{partes[2]} "
+        f"{formatear_numero(numero2)} = "
+        f"{formatear_numero(resultado)}`"
+    )
+
+    enviar_mensaje(chat_id, mensaje)
+
+
+def comando_tabla(chat_id, partes):
+    """
+    Comando /tabla <numero>.
+    Genera la tabla de multiplicar desde 1 hasta 10.
+    """
+
+    if len(partes) != 2:
+        mensaje = (
+            "*Error: par\u00e1metros incorrectos*\n\n"
+            "Forma correcta:\n"
+            "`/tabla <numero>`\n\n"
+            "Ejemplo:\n"
+            "`/tabla 5`"
+        )
+        enviar_mensaje(chat_id, mensaje)
+        return
+
+    try:
+        numero = float(partes[1])
+    except ValueError:
+        mensaje = (
+            "*Error: valor inv\u00e1lido*\n\n"
+            "El par\u00e1metro ingresado debe ser un n\u00famero.\n\n"
+            "Ejemplo:\n"
+            "`/tabla 5`"
+        )
+        enviar_mensaje(chat_id, mensaje)
+        return
+
+    numero_texto = formatear_numero(numero)
+    lineas = []
+
+    for i in range(1, 11):
+        resultado = numero * i
+        lineas.append(
+            f"{numero_texto} x {i} = {formatear_numero(resultado)}"
+        )
+
+    mensaje = (
+        f"*Tabla de multiplicar del {numero_texto}*\n\n"
+        + "\n".join(lineas)
+    )
+
+    enviar_mensaje(chat_id, mensaje)
+
+
+# ==============================================================================
 # PROCESAMIENTO PRINCIPAL DE MENSAJES
 # ==============================================================================
 
@@ -236,6 +370,11 @@ def procesar_mensaje(mensaje):
         comando_ayuda(chat_id)
     elif cmd == "/menu":
         comando_menu(chat_id)
+    elif cmd == "/calcular":
+        comando_calcular(chat_id, partes)
+    elif cmd == "/tabla":
+        comando_tabla(chat_id, partes)
+
 def iniciar_bot():
     """
     Bucle principal del bot (Long Polling).
