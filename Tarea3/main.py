@@ -80,7 +80,7 @@ def comando_hola(chat_id, mensaje):
     nombre = usuario.get("first_name", "usuario")
     enviar_mensaje(
         chat_id,
-        f"¡Hola, *{nombre}*! 👋\n"
+        f"¡Hola, *{nombre}*!\n"
         "Bienvenido al bot del *Grupo #9*."
     )
 
@@ -99,9 +99,9 @@ def comando_hora(chat_id):
     hora_str = ahora.strftime("%H:%M:%S")
 
     mensaje = (
-        "🕒 *Fecha y Hora Actual*\n\n"
-        f"📅 *Fecha:* `{fecha_str}`\n"
-        f"⏰ *Hora:* `{hora_str}` (UTC-6)"
+        "*Fecha y Hora Actual*\n\n"
+        f"*Fecha:* `{fecha_str}`\n"
+        f"*Hora:* `{hora_str}` (UTC-6)"
     )
     enviar_mensaje(chat_id, mensaje)
 
@@ -111,11 +111,11 @@ def comando_contacto(chat_id):
     Comando /contacto: Muestra información de contacto definida por el grupo.
     """
     mensaje = (
-        "📫 *Información de Contacto - Grupo #9*\n\n"
-        "🎓 *Curso:* Inteligencia Artificial 1\n"
-        "🏛 *Universidad:* USAC - Facultad de Ingeniería\n"
-        "📧 *Correo de Contacto:* `grupo9.ia1.usac@gmail.com`\n"
-        "🤖 *Bot de Telegram:* @G9_tarea3_bot"
+        "*Información de Contacto - Grupo #9*\n\n"
+        "*Curso:* Inteligencia Artificial 1\n"
+        "*Universidad:* USAC - Facultad de Ingeniería\n"
+        "*Correo de Contacto:* `grupo9.ia1.usac@gmail.com`\n"
+        "*Bot de Telegram:* @G9_tarea3_bot"
     )
     enviar_mensaje(chat_id, mensaje)
 
@@ -125,7 +125,7 @@ def comando_integrantes(chat_id):
     Comando /integrantes: Muestra los nombres y carnets del Grupo #9.
     """
     mensaje = (
-        "👥 *Integrantes del Grupo #9*\n\n"
+        "*Integrantes del Grupo #9*\n\n"
         "1. Fernando Misael Morales Ortiz - `202001950`\n"
         "2. Cristofher Antonio Saquilmer Rodas - `201700686`\n"
         "3. Daniel Estuardo Salvatierra Macajola - `202202768`\n"
@@ -144,7 +144,7 @@ def comando_ayuda(chat_id):
     Muestra todos los comandos disponibles y una descripción de ellos.
     """
     mensaje = (
-        "📋 *Panel de Comandos - Grupo #9*\n"
+        "*Panel de Comandos - Grupo #9*\n"
         "-------------------------------------\n\n"
         "*Comandos Generales*\n"
         "`/hola` — Saluda al usuario de forma personalizada.\n"
@@ -170,15 +170,15 @@ def comando_menu(chat_id):
     """
     parametros = {
         "chat_id": chat_id,
-        "text": "📱 *Menú Interactivo de Opciones*\n\nSeleccione una opción:",
+        "text": "*Menú Interactivo de Opciones*\n\nSeleccione una opción:",
         "parse_mode": "Markdown",
         "reply_markup": json.dumps({
             "inline_keyboard": [
-                [{"text": "👋 Saludar", "callback_data": "/hola"}],
-                [{"text": "🕒 Hora Actual", "callback_data": "/hora"}],
-                [{"text": "📫 Contacto", "callback_data": "/contacto"}],
-                [{"text": "👥 Integrantes", "callback_data": "/integrantes"}],
-                [{"text": "❓ Ayuda", "callback_data": "/ayuda"}]
+                [{"text": "Saludar", "callback_data": "/hola"}],
+                [{"text": "Hora Actual", "callback_data": "/hora"}],
+                [{"text": "Contacto", "callback_data": "/contacto"}],
+                [{"text": "Integrantes", "callback_data": "/integrantes"}],
+                [{"text": "Ayuda", "callback_data": "/ayuda"}]
             ]
         })
     }
@@ -203,7 +203,7 @@ def comando_calcular(chat_id, partes):
     """
     if len(partes) != 4:
         mensaje = (
-            "⚠️ *Error: parámetros incorrectos*\n\n"
+            "*Error: parámetros incorrectos*\n\n"
             "Forma correcta:\n"
             "`/calcular <numero1> <operador> <numero2>`\n\n"
             "Ejemplo:\n"
@@ -217,7 +217,7 @@ def comando_calcular(chat_id, partes):
         numero2 = float(partes[3])
     except ValueError:
         mensaje = (
-            "⚠️ *Error: valores inválidos*\n\n"
+            "*Error: valores inválidos*\n\n"
             "Los valores utilizados en la operación deben ser números.\n\n"
             "Ejemplo:\n"
             "`/calcular 10 + 5`"
@@ -236,7 +236,7 @@ def comando_calcular(chat_id, partes):
     elif operador == "/":
         if numero2 == 0:
             mensaje = (
-                "⚠️ *Error matemático*\n\n"
+                "*Error matemático*\n\n"
                 "No es posible realizar una división entre cero."
             )
             enviar_mensaje(chat_id, mensaje)
@@ -244,7 +244,7 @@ def comando_calcular(chat_id, partes):
         resultado = numero1 / numero2
     else:
         mensaje = (
-            "⚠️ *Error: operador incorrecto*\n\n"
+            "*Error: operador incorrecto*\n\n"
             "Los operadores permitidos son:\n"
             "`+` suma\n"
             "`-` resta\n"
@@ -257,7 +257,7 @@ def comando_calcular(chat_id, partes):
         return
 
     mensaje = (
-        "🧮 *Resultado de la operación*\n\n"
+        "*Resultado de la operación*\n\n"
         f"`{formatear_numero(numero1)} "
         f"{partes[2]} "
         f"{formatear_numero(numero2)} = "
@@ -274,7 +274,7 @@ def comando_tabla(chat_id, partes):
     """
     if len(partes) != 2:
         mensaje = (
-            "⚠️ *Error: parámetros incorrectos*\n\n"
+            "*Error: parámetros incorrectos*\n\n"
             "Forma correcta:\n"
             "`/tabla <numero>`\n\n"
             "Ejemplo:\n"
@@ -287,7 +287,7 @@ def comando_tabla(chat_id, partes):
         numero = float(partes[1])
     except ValueError:
         mensaje = (
-            "⚠️ *Error: valor inválido*\n\n"
+            "*Error: valor inválido*\n\n"
             "El parámetro ingresado debe ser un número.\n\n"
             "Ejemplo:\n"
             "`/tabla 5`"
@@ -305,7 +305,7 @@ def comando_tabla(chat_id, partes):
         )
 
     mensaje = (
-        f"✖️ *Tabla de multiplicar del {numero_texto}*\n\n"
+        f"*Tabla de multiplicar del {numero_texto}*\n\n"
         + "\n".join(lineas)
     )
 
@@ -326,10 +326,10 @@ def comando_convertir(chat_id, texto):
     if len(partes) != 4:
         enviar_mensaje(
             chat_id,
-            "⚠️ *Parámetros incompletos o incorrectos.*\n\n"
-            "📌 *Uso correcto:* `/convertir <cantidad> <origen> <destino>`\n"
-            "💡 *Ejemplo:* `/convertir 10 m cm`\n"
-            "📏 *Unidades válidas:* `cm`, `m`, `km`, `mi`, `ft`"
+            "*Parámetros incompletos o incorrectos.*\n\n"
+            "*Uso correcto:* `/convertir <cantidad> <origen> <destino>`\n"
+            "*Ejemplo:* `/convertir 10 m cm`\n"
+            "*Unidades válidas:* `cm`, `m`, `km`, `mi`, `ft`"
         )
         return
 
@@ -338,8 +338,8 @@ def comando_convertir(chat_id, texto):
     except ValueError:
         enviar_mensaje(
             chat_id,
-            "⚠️ *Error:* La cantidad debe ser un valor numérico válido.\n"
-            "📌 *Ejemplo:* `/convertir 15.5 m ft`"
+            "*Error:* La cantidad debe ser un valor numérico válido.\n"
+            "*Ejemplo:* `/convertir 15.5 m ft`"
         )
         return
 
@@ -357,8 +357,8 @@ def comando_convertir(chat_id, texto):
     if origen not in factores_a_metros or destino not in factores_a_metros:
         enviar_mensaje(
             chat_id,
-            "⚠️ *Unidades de medida no válidas.*\n\n"
-            "📏 *Las unidades soportadas son:* `cm`, `m`, `km`, `mi`, `ft`"
+            "*Unidades de medida no válidas.*\n\n"
+            "*Las unidades soportadas son:* `cm`, `m`, `km`, `mi`, `ft`"
         )
         return
 
@@ -367,7 +367,7 @@ def comando_convertir(chat_id, texto):
 
     enviar_mensaje(
         chat_id,
-        f"📏 *Conversión de Longitud*\n\n"
+        f"*Conversión de Longitud*\n\n"
         f"• *Entrada:* `{cantidad} {origen}`\n"
         f"• *Resultado:* `{resultado:.4f} {destino}`"
     )
@@ -383,9 +383,9 @@ def comando_aleatorio(chat_id, texto):
     if len(partes) != 3:
         enviar_mensaje(
             chat_id,
-            "⚠️ *Parámetros incompletos o incorrectos.*\n\n"
-            "📌 *Uso correcto:* `/aleatorio <min> <max>`\n"
-            "💡 *Ejemplo:* `/aleatorio 1 100`"
+            "*Parámetros incompletos o incorrectos.*\n\n"
+            "*Uso correcto:* `/aleatorio <min> <max>`\n"
+            "*Ejemplo:* `/aleatorio 1 100`"
         )
         return
 
@@ -395,23 +395,23 @@ def comando_aleatorio(chat_id, texto):
     except ValueError:
         enviar_mensaje(
             chat_id,
-            "⚠️ *Error:* Los límites `<min>` y `<max>` deben ser números enteros.\n"
-            "📌 *Ejemplo:* `/aleatorio 10 50`"
+            "*Error:* Los límites `<min>` y `<max>` deben ser números enteros.\n"
+            "*Ejemplo:* `/aleatorio 10 50`"
         )
         return
 
     if minimo > maximo:
         enviar_mensaje(
             chat_id,
-            "⚠️ *Error:* El valor mínimo (`min`) no puede ser mayor que el valor máximo (`max`).\n"
-            "📌 *Ejemplo:* `/aleatorio 1 10`"
+            "*Error:* El valor mínimo (`min`) no puede ser mayor que el valor máximo (`max`).\n"
+            "*Ejemplo:* `/aleatorio 1 10`"
         )
         return
 
     numero = random.randint(minimo, maximo)
     enviar_mensaje(
         chat_id,
-        f"🎲 *Generador Aleatorio*\n\n"
+        f"*Generador Aleatorio*\n\n"
         f"• *Rango:* `[{minimo}, {maximo}]`\n"
         f"• *Número obtenido:* *{numero}*"
     )
@@ -451,7 +451,7 @@ def procesar_mensaje(mensaje):
         elif cmd.startswith("/"):
             enviar_mensaje(
                 chat_id,
-                "⚠️ *Opción no reconocida.*\n\n"
+                "*Opción no reconocida.*\n\n"
                 "Escribe `/ayuda` para ver la lista de comandos disponibles."
             )
         return
@@ -491,7 +491,7 @@ def procesar_mensaje(mensaje):
     elif cmd.startswith("/"):
         enviar_mensaje(
             chat_id,
-            "⚠️ *Comando no reconocido o inexistente.*\n\n"
+            "*Comando no reconocido o inexistente.*\n\n"
             "Escribe `/ayuda` para ver la lista de comandos disponibles y su sintaxis correcta."
         )
 
